@@ -24,5 +24,21 @@ class TestVector(unittest.TestCase):
         np.testing.assert_almost_equal(list(vector_1.scalar_multipile(7.41)),
             expected_result, 3)
 
+    def test_magnitude(self):
+        vector = Vector([-0.221, 7.437])
+        np.testing.assert_almost_equal(vector.length(), 7.44028292473, 3)
+
+        vector = Vector([8.813, -1.331, -6.247])
+        np.testing.assert_almost_equal(vector.length(), 10.8841875673, 3)
+
+    def test_normalize(self):
+        vector = Vector([5.581, -2.136])
+        expected_result = [0.9339352140866403, -0.35744232526233]
+        np.testing.assert_almost_equal(list(vector.normalize()), expected_result, 3)
+
+        vector = Vector([1.996, 3.108, -4.554])
+        expected_result = [0.3404012959433014, 0.5300437012984873, -0.7766470449528029]
+        np.testing.assert_almost_equal(list(vector.normalize()), expected_result, 3)
+
 if __name__ == '__main__':
     unittest.main()

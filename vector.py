@@ -1,3 +1,5 @@
+import math
+
 class Vector():
 
     def __init__(self, values):
@@ -35,5 +37,18 @@ class Vector():
     
     def __str__(self):
         return "Vector ({})".format(self.values)
+
+    def normalize(self):
+        ''' Return a normalized version of the vector. This is the unit
+            vector of length 1 in the same direction.'''
+        scale_by = 1.0 / self.length()
+        return self.scalar_multipile(scale_by)
+
+    def length(self):
+        ''' Return the length of the vector. Not the dimension.'''
+        sum_squared = 0
+        for i in self.values:
+            sum_squared += i * i
+        return math.sqrt(sum_squared)
 
 
