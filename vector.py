@@ -51,4 +51,23 @@ class Vector():
             sum_squared += i * i
         return math.sqrt(sum_squared)
 
+    def calculate_inner_product(self, vector_to_multiple):
+        ''' Note inner product is the same as dot product '''
+
+        if len(vector_to_multiple) != self.dimension:
+            raise ValueError('Dimension of vector is {} and vector ' \
+                'to multiple is {}'.format(self.dimension, \
+                vector_to_multiple.dimension))
+
+        result = 0.0
+        for index, vector_item  in enumerate(vector_to_multiple):
+            result += (self.values[index] * vector_item)
+        return result
+
+    def angle_between_vectors(self, input_vector):
+        return math.acos(
+            self.normalize().calculate_inner_product(input_vector.normalize()))
+
+    def angle_between_vectors_in_degrees(self, input_vector):
+        return math.degrees(self.angle_between_vectors(input_vector))
 

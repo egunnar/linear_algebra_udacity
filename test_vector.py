@@ -40,5 +40,33 @@ class TestVector(unittest.TestCase):
         expected_result = [0.3404012959433014, 0.5300437012984873, -0.7766470449528029]
         np.testing.assert_almost_equal(list(vector.normalize()), expected_result, 3)
 
+    def test_inner_product(self):
+        vector1 = Vector([7.887, 4.138])
+        vector2 = Vector([-8.802, 6.776])
+        result = vector1.calculate_inner_product(vector2)
+        expected_result = -41.382286
+        np.testing.assert_almost_equal(result, expected_result, 3)
+
+        vector1 = Vector([-5.955, -4.904, -1.874])
+        vector2 = Vector([-4.496, -8.755, 7.103])
+        expected_result = 56.397178
+        result = vector1.calculate_inner_product(vector2)
+        np.testing.assert_almost_equal(result, expected_result, 3)
+
+
+    def test_angle_between(self):
+        vector1 = Vector([3.183, -7.627])
+        vector2 = Vector([-2.668, 5.319])
+        expected_result = 3.07202630984
+        result = vector1.angle_between_vectors(vector2)
+        np.testing.assert_almost_equal(result, expected_result, 3)
+
+        vector1 = Vector([7.35, .221, 5.188])
+        vector2 = Vector([2.751, 8.259, 3.985])
+        expected_result = 60.2758112052
+        result = vector1.angle_between_vectors_in_degrees(vector2)
+        np.testing.assert_almost_equal(result, expected_result, 3)
+
+
 if __name__ == '__main__':
     unittest.main()
