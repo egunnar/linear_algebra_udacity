@@ -67,6 +67,41 @@ class TestVector(unittest.TestCase):
         result = vector1.angle_between_vectors_in_degrees(vector2)
         np.testing.assert_almost_equal(result, expected_result, 3)
 
+    def test_parallel_and_orthogonal(self):
+        vectors_to_check = (
+            {
+                'vectors':  ([-7.579, -7.88], [22.737, 23.64]),
+                'parallel': True,
+                'orthogonal': False
+            },
+            {
+                'vectors': ([-2.029, 9.97, 4.172], [-9.231, -6.639, -7.245]),
+                'parallel': False,
+                'orthogonal': False
+            },
+            {
+                'vectors': ([-2.328, -7.284, -1.214], [-1.821, 1.072, -2.94]),
+                'parallel': False,
+                'orthogonal': True
+            },
+            {
+                'vectors': ([2.118, 4.827], [0, 0]),
+                'parallel': True,
+                'orthogonal': True
+            },
+        )
+
+        for test_info in vectors_to_check:
+            v1 = Vector(test_info['vectors'][0])
+            v2 = Vector(test_info['vectors'][1])
+            v1.is_parallel(v2)
+            print('working on {} {}'.format(v1, v2))
+            print('parallel')
+            parallel = self.assertEqual(v1.is_parallel(v2), test_info['parallel'])
+            print('orthogonal')
+            orthogonal = self.assertEqual(v1.is_orthogonal(v2), test_info['orthogonal'])
+
 
 if __name__ == '__main__':
     unittest.main()
+

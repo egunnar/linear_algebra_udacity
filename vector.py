@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 class Vector():
 
@@ -34,7 +35,7 @@ class Vector():
 
     def __iter__(self):
         return iter(self.values)
-    
+
     def __str__(self):
         return "Vector ({})".format(self.values)
 
@@ -70,4 +71,54 @@ class Vector():
 
     def angle_between_vectors_in_degrees(self, input_vector):
         return math.degrees(self.angle_between_vectors(input_vector))
+
+    def is_zero_vector(self):
+        for i in self.values:
+            if i != 0:
+                return False
+        return True
+
+
+    def is_parallel(self, input_vector):
+
+        # note, a simplier/better way to implement this is if
+        # angle_between_vectors() return 0
+
+        # if either vector is the zero vector return zeor
+        if self.is_zero_vector() or input_vector.is_zero_vector():
+            return True
+
+        # I guess if the dimensions are different they aren't parallel?
+        if input_vector.dimension != self.dimension:
+            return False
+
+        index_divide_by_zero = set()
+        i = 0
+        for element1, element2 in zip(self.values[1:], input_vector.values[1:]):
+            if element1 != 0:
+                scalar_ratio = element2 / element1
+            else:
+                index_divide_by_zero.add(i)
+            i +=1
+
+        i = 0
+        for element1, element2 in zip(self.values[1:], input_vector.values[1:]):
+            scalar = element2 / element1
+            if element1 != 0:
+                if not np.isclose(scalar, scalar_ratio):
+                    return False
+            else:
+                if i not in index_divide_by_zero:
+                    return False
+
+        return True
+
+
+    def is_orthogonal(self, input_vector):
+
+        dot_product = self.calculate_inner_product(input_vector)
+        if np.isclose(dot_product, 0):
+            return True
+        else:
+            return False
 
