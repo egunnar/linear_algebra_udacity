@@ -126,6 +126,26 @@ class TestVector(unittest.TestCase):
         expected_result  = [1.0404838, -3.361239, 2.843915, -5.1898]
         np.testing.assert_almost_equal(list(o), expected_result, 3)
 
+    def test_cross_product(self):
+        v = Vector([8.462, 7.893, -8.187])
+        w = Vector([6.984, -5.975, 4.778])
+
+        expected_result = [-11.20457, -97.6094, -105.68516]
+        result = v.cross_product(w)
+        np.testing.assert_almost_equal(list(result), expected_result, 3)
+
+        v = Vector([-8.987, -9.838, 5.031])
+        w = Vector([-4.268, -1.861, -8.866])
+        expected_result = 142.12222
+        result = v.area_of_parrallelogram(w)
+        np.testing.assert_almost_equal(result, expected_result, 3)
+
+        v = Vector([1.5, 9.547, 3.691])
+        w = Vector([-6.007, 0.124, 5.772])
+        result = v.area_of_triangle(w)
+        expected_result = 42.56493739941894
+        np.testing.assert_almost_equal(result, expected_result, 3)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -130,3 +130,18 @@ class Vector():
     def orthogonal_vector(self, w_project_onto):
         return self - self.projected_onto(w_project_onto)
 
+    def cross_product(self, v):
+        X = 0
+        Y = 1
+        Z = 2
+        return Vector([
+            self.values[Y] * v.values[Z] - self.values[Z] * v.values[Y],
+            self.values[Z] * v.values[X] - self.values[X] * v.values[Z],
+            self.values[X] * v.values[Y] - self.values[Y] * v.values[X],
+        ])
+
+    def area_of_parrallelogram(self, v):
+        return self.cross_product(v).length()
+
+    def area_of_triangle(self, v):
+        return .5 * self.cross_product(v).length()
