@@ -122,3 +122,11 @@ class Vector():
         else:
             return False
 
+    def projected_onto(self, v_project_onto):
+        v_unit_vector = v_project_onto.normalize()
+        tmp_scalar = self.calculate_inner_product(v_unit_vector)
+        return v_unit_vector.scalar_multipile(tmp_scalar)
+
+    def orthogonal_vector(self, w_project_onto):
+        return self - self.projected_onto(w_project_onto)
+

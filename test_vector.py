@@ -98,6 +98,34 @@ class TestVector(unittest.TestCase):
             parallel = self.assertEqual(v1.is_parallel(v2), test_info['parallel'])
             orthogonal = self.assertEqual(v1.is_orthogonal(v2), test_info['orthogonal'])
 
+    def test_projection(self):
+
+        v = Vector([3.039, 1.879])
+        b = Vector([0.825, 2.036])
+        result = v.projected_onto(b)
+        expected_result = [1.08260, 2.6717]
+        np.testing.assert_almost_equal(list(result),
+            expected_result, 3)
+
+        # test orthogonal to projection
+        v = Vector([-9.88, -3.264, -8.159])
+        w = Vector([-2.155, -9.353, -9.473])
+        result = v.orthogonal_vector(w)
+        expected_result = [-8.35008, 3.37606, -1.433746]
+        np.testing.assert_almost_equal(list(result),
+            expected_result, 3)
+
+        # test can break into 2 vector components
+        v = Vector([3.009,-6.172,3.692,-2.51])
+        w = Vector([6.404,-9.144,2.759,8.718])
+        b = v.projected_onto(w)
+        expected_result = [1.9685, -2.8107607, 0.84808, 2.6798]
+        np.testing.assert_almost_equal(list(b), expected_result, 3)
+
+        o = v.orthogonal_vector(w)
+        expected_result  = [1.0404838, -3.361239, 2.843915, -5.1898]
+        np.testing.assert_almost_equal(list(o), expected_result, 3)
+
 
 if __name__ == '__main__':
     unittest.main()
