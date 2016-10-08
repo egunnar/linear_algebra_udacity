@@ -95,10 +95,7 @@ class TestVector(unittest.TestCase):
             v1 = Vector(test_info['vectors'][0])
             v2 = Vector(test_info['vectors'][1])
             v1.is_parallel(v2)
-            print('working on {} {}'.format(v1, v2))
-            print('parallel')
             parallel = self.assertEqual(v1.is_parallel(v2), test_info['parallel'])
-            print('orthogonal')
             orthogonal = self.assertEqual(v1.is_orthogonal(v2), test_info['orthogonal'])
 
 
