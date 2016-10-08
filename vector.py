@@ -131,6 +131,11 @@ class Vector():
         return self - self.projected_onto(w_project_onto)
 
     def cross_product(self, v):
+
+        if (len(self) != 3  or len(v) != 3):
+            raise Exception('cross product is 3 dimensions only. if you'\
+                ' are using 2 dimensions put a 0 for both z values')
+
         X = 0
         Y = 1
         Z = 2
