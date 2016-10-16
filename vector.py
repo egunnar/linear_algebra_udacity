@@ -66,8 +66,17 @@ class Vector():
         return result
 
     def angle_between_vectors(self, input_vector):
-        return math.acos(
-            self.normalize().calculate_inner_product(input_vector.normalize()))
+        for_cos = self.normalize().calculate_inner_product(input_vector.normalize())
+
+        # due to floating point errors if value is slighly larger than 1 or
+        # less than -1 acos will explode as in math it is impossible to for
+        # cosine to be outside of [-1, 1]
+        if np.isclose(for_cos, -1):
+            for_cos = -1
+        if np.isclose(for_cos, 1):
+            for_cos = 1
+
+        return math.acos(for_cos)
 
     def angle_between_vectors_in_degrees(self, input_vector):
         return math.degrees(self.angle_between_vectors(input_vector))
@@ -81,38 +90,13 @@ class Vector():
 
     def is_parallel(self, input_vector):
 
-        # note, a simplier/better way to implement this is if
-        # angle_between_vectors() return 0
-
-        # if either vector is the zero vector return zeor
         if self.is_zero_vector() or input_vector.is_zero_vector():
             return True
+        angle = self.angle_between_vectors_in_degrees(input_vector)
+        if np.isclose(angle, 0) or np.isclose(angle, 180):
+            return True
 
-        # I guess if the dimensions are different they aren't parallel?
-        if input_vector.dimension != self.dimension:
-            return False
-
-        index_divide_by_zero = set()
-        i = 0
-        for element1, element2 in zip(self.values[1:], input_vector.values[1:]):
-            if element1 != 0:
-                scalar_ratio = element2 / element1
-            else:
-                index_divide_by_zero.add(i)
-            i +=1
-
-        i = 0
-        for element1, element2 in zip(self.values[1:], input_vector.values[1:]):
-            scalar = element2 / element1
-            if element1 != 0:
-                if not np.isclose(scalar, scalar_ratio):
-                    return False
-            else:
-                if i not in index_divide_by_zero:
-                    return False
-
-        return True
-
+        return False
 
     def is_orthogonal(self, input_vector):
 
@@ -135,7 +119,6 @@ class Vector():
         if (len(self) != 3  or len(v) != 3):
             raise Exception('cross product is 3 dimensions only. if you'\
                 ' are using 2 dimensions put a 0 for both z values')
-
         X = 0
         Y = 1
         Z = 2
