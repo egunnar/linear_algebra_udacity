@@ -7,8 +7,21 @@ class Vector():
         self.values = values
         self.dimension = len(values)
 
+    def __getitem__(self, key):
+        return self.values[key]
+
+    def __setitem__(self, key, value):
+        self.values[key] = value
+
     def __len__(self):
         return self.dimension
+
+    def __eq__(self, vector):
+        for index, vector_item  in enumerate(vector):
+            if not np.isclose(vector_item, self.values[i]):
+                return False
+        return True
+
 
     def __add__(self, values_to_add):
         if len(values_to_add) != self.dimension:

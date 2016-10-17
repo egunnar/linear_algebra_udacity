@@ -1,4 +1,5 @@
 from vector import Vector
+from line import Line
 import unittest
 import numpy as np
 
@@ -146,6 +147,52 @@ class TestVector(unittest.TestCase):
         expected_result = 42.56493739941894
         np.testing.assert_almost_equal(result, expected_result, 3)
 
+    def test_line_functions(self):
+        lines_to_test = (
+            {
+                'lines':
+                    (
+                        Line(Vector([4.046, 2.836]), 1.21),
+                        Line(Vector([10.115, 7.09]), 3.025)
+                    ),
+                'equal': True,
+                'parallel': True,
+                'intersection': None,
+            },
+            {
+                'lines':
+                    (
+                        Line(Vector([7.204, 3.182]), 8.68),
+                        Line(Vector([8.172, 4.114]), 9.883)
+                    ),
+                'equal': False,
+                'parallel': False,
+                'intersection': (1.1727766354646414, 0.07269551166333184),
+            },
+            {
+                'lines':
+                    (
+                        Line(Vector([1.182, 5.562]), 6.744),
+                        Line(Vector([1.773, 8.343]), 9.525)
+                    ),
+                'equal': False,
+                'parallel': True,
+                'intersection': None,
+            }
+        )
+        for line_test_info in lines_to_test:
+            line1 = line_test_info['lines'][0]
+            line2 = line_test_info['lines'][1]
+            self.assertEqual(line1.is_parallel(line2),
+                line_test_info['parallel'])
+            self.assertEqual(line1.is_equal(line2), line_test_info['equal'])
+            intersection_vector = line1.intersection(line2)
+            if intersection_vector is None:
+                self.assertIsNone(line_test_info['intersection'])
+            else:
+                np.testing.assert_almost_equal(
+                    list(intersection_vector.values),
+                    line_test_info['intersection'])
 
 if __name__ == '__main__':
     unittest.main()
