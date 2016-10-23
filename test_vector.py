@@ -2,6 +2,7 @@ from vector import Vector
 from line import Line
 import unittest
 import numpy as np
+from plane import Plane
 
 class TestVector(unittest.TestCase):
 
@@ -193,6 +194,41 @@ class TestVector(unittest.TestCase):
                 np.testing.assert_almost_equal(
                     list(intersection_vector.values),
                     line_test_info['intersection'])
+
+    def test_plane_functions(self):
+        planes_to_test = (
+            {
+                'planes': (
+                    Plane(Vector([-0.412, 3.806, 0.728]), -3.46),
+                    Plane(Vector([1.03, -9.515, -1.82]), 8.65)
+                ),
+                'equal': True,
+                'parallel': True,
+            },
+            {
+                'planes': (
+                    Plane(Vector([2.611, 5.528, 0.283]), 4.6),
+                    Plane(Vector([7.715, 8.306, 5.342]), 3.76)
+                ),
+                'equal': False,
+                'parallel': False,
+            },
+            {
+                'planes': (
+                    Plane(Vector([-7.926, 8.625, -7.212]), -7.952),
+                    Plane(Vector([-2.642, 2.875, -2.404]), -2.443)
+                ),
+                'equal': False,
+                'parallel': True,
+            }
+        )
+        for plane_test_info in planes_to_test:
+            plane1 = plane_test_info['planes'][0]
+            plane2 = plane_test_info['planes'][1]
+            self.assertEqual(plane1.is_parallel(plane2),
+                plane_test_info['parallel'])
+            self.assertEqual(plane1.is_equal(plane2), plane_test_info['equal'])
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,8 +1,7 @@
 from decimal import Decimal, getcontext
-
 from vector import Vector
+import numpy as np
 
-getcontext().prec = 30
 
 
 class Plane(object):
@@ -13,22 +12,37 @@ class Plane(object):
         self.dimension = 3
 
         if not normal_vector:
-            all_zeros = ['0']*self.dimension
+            all_zeros = [0]*self.dimension
             normal_vector = Vector(all_zeros)
         self.normal_vector = normal_vector
 
         if not constant_term:
-            constant_term = Decimal('0')
-        self.constant_term = Decimal(constant_term)
+            constant_term = 0
+        self.constant_term = constant_term
 
         self.set_basepoint()
+
+    def is_parallel(self, plane):
+        return self.normal_vector.is_parallel(plane.normal_vector)
+
+    def is_equal(self, plane):
+
+        base_point1 = self.basepoint
+        base_point2 = plane.basepoint
+
+        connecting_vector = base_point1 - base_point2
+        if not(connecting_vector.is_orthogonal(self.normal_vector)):
+            return False
+        if not(connecting_vector.is_orthogonal(plane.normal_vector)):
+            return False
+        return True
 
 
     def set_basepoint(self):
         try:
             n = self.normal_vector
             c = self.constant_term
-            basepoint_coords = ['0']*self.dimension
+            basepoint_coords = [0]*self.dimension
 
             initial_index = Plane.first_nonzero_index(n)
             initial_coefficient = n[initial_index]
@@ -92,11 +106,7 @@ class Plane(object):
     @staticmethod
     def first_nonzero_index(iterable):
         for k, item in enumerate(iterable):
-            if not MyDecimal(item).is_near_zero():
+            if not np.isclose(item, 0):
                 return k
         raise Exception(Plane.NO_NONZERO_ELTS_FOUND_MSG)
 
-
-class MyDecimal(Decimal):
-    def is_near_zero(self, eps=1e-10):
-        return abs(self) < eps
