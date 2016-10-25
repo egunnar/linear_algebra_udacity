@@ -8,6 +8,12 @@ class Plane(object):
 
     NO_NONZERO_ELTS_FOUND_MSG = 'No nonzero elements found'
 
+    def get_normal_vector(self):
+        return self.normal_vector
+
+    def get_constant_term(self):
+        return self.constant_term
+
     def __init__(self, normal_vector=None, constant_term=None):
         self.dimension = 3
 
@@ -36,6 +42,10 @@ class Plane(object):
         if not(connecting_vector.is_orthogonal(plane.normal_vector)):
             return False
         return True
+
+
+    def __eq__(self, plane):
+        return self.is_equal(plane)
 
 
     def set_basepoint(self):

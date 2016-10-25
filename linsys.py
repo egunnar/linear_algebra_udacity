@@ -27,15 +27,38 @@ class LinearSystem(object):
 
 
     def swap_rows(self, row1, row2):
-        pass # add your code here
+        tmp = self.planes[row1]
+        self.planes[row1] = self.planes[row2]
+        self.planes[row2] = tmp
 
 
     def multiply_coefficient_and_row(self, coefficient, row):
-        pass # add your code here
+        vector = self.planes[row].get_normal_vector()
+        for i, value in enumerate(vector):
+            vector[i] = value * coefficient
+
+        const = self.planes[row].get_constant_term()
+        const = const * coefficient
+
+        self.planes[row] = Plane(vector, constant_term= const)
+
 
 
     def add_multiple_times_row_to_row(self, coefficient, row_to_add, row_to_be_added_to):
-        pass # add your code here
+
+        vector_to_add = self.planes[row_to_add].get_normal_vector()
+        for i, value in enumerate(vector_to_add):
+            vector_to_add[i] = value * coefficient
+        const_to_add = self.planes[row_to_add].get_constant_term()
+        const_to_add = const_to_add * coefficient
+
+        vector_to_set = self.planes[row_to_be_added_to].get_normal_vector()
+        for i, value in enumerate(vector_to_set):
+            vector_to_set[i] = value + vector_to_add[i]
+        const_to_set = self.planes[row_to_be_added_to].get_constant_term()
+        const_to_set = const_to_set + const_to_add
+
+        self.planes[row_to_be_added_to] = Plane(vector_to_set, constant_term= const_to_set)
 
 
     def indices_of_first_nonzero_terms_in_each_row(self):
@@ -84,21 +107,3 @@ class MyDecimal(Decimal):
     def is_near_zero(self, eps=1e-10):
         return abs(self) < eps
 
-
-p0 = Plane(normal_vector=Vector(['1','1','1']), constant_term='1')
-p1 = Plane(normal_vector=Vector(['0','1','0']), constant_term='2')
-p2 = Plane(normal_vector=Vector(['1','1','-1']), constant_term='3')
-p3 = Plane(normal_vector=Vector(['1','0','-2']), constant_term='2')
-
-s = LinearSystem([p0,p1,p2,p3])
-
-print s.indices_of_first_nonzero_terms_in_each_row()
-print '{},{},{},{}'.format(s[0],s[1],s[2],s[3])
-print len(s)
-print s
-
-s[0] = p1
-print s
-
-print MyDecimal('1e-9').is_near_zero()
-print MyDecimal('1e-11').is_near_zero()
